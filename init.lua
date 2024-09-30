@@ -563,7 +563,6 @@ require('lazy').setup({
           local map = function(keys, func, desc, mode)
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-            vim.keymap.set('i', '<leader><Tab>', '<C-x><C-o>', { buffer = event.buf, noremap = true, silent = true })
           end
 
           -- Jump to the definition of the word under your cursor.
@@ -880,9 +879,16 @@ require('lazy').setup({
             -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
             group_index = 0,
           },
+          -- https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'sql' },
+          { name = 'dotenv' },
+          { name = 'npm' },
+          { name = 'css-variables' },
+          { name = 'sass-variables' },
+          { name = 'scss variables' },
         },
       }
     end,
