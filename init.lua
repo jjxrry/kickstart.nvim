@@ -231,7 +231,20 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-  'https://github.com/m4xshen/autoclose.nvim',
+  {
+    'https://github.com/m4xshen/autoclose.nvim',
+    config = function()
+      require('autoclose').setup {
+        keys = {
+          ['['] = { escape = true, close = true, pair = '[]', disabled_filetypes = {} },
+          ['('] = { escape = true, close = true, pair = '()', disabled_filetypes = {} },
+          ['<'] = { escape = true, close = true, pair = '<>', disabled_filetypes = {} },
+          ["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = {} },
+          ['"'] = { escape = true, close = true, pair = '""', disabled_filetypes = {} },
+        },
+      }
+    end,
+  },
   {
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
@@ -550,6 +563,7 @@ require('lazy').setup({
           local map = function(keys, func, desc, mode)
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            vim.keymap.set('i', '<leader><Tab>', '<C-x><C-o>', { buffer = event.buf, noremap = true, silent = true })
           end
 
           -- Jump to the definition of the word under your cursor.
@@ -647,9 +661,11 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
+        clangd = {},
+        gopls = {},
+        pyright = {},
+        tsserver = {},
+        jdtls = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -692,6 +708,10 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'typescript-language-server', -- TypeScript/JavaScript language server
+        'python-lsp-server', -- Python language server
+        'clangd', -- C/C++ language server
+        'jdtls', -- Java language server
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
