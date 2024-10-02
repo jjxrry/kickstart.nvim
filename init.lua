@@ -157,6 +157,10 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Tab & Shift checks
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -205,6 +209,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- set the filetypes and their local tabstop/shiftwidths
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true -- Convert tabs to spaces
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -230,7 +244,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  --  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   {
     'https://github.com/m4xshen/autoclose.nvim',
     config = function()
@@ -238,7 +252,6 @@ require('lazy').setup({
         keys = {
           ['['] = { escape = true, close = true, pair = '[]', disabled_filetypes = {} },
           ['('] = { escape = true, close = true, pair = '()', disabled_filetypes = {} },
-          ['<'] = { escape = true, close = true, pair = '<>', disabled_filetypes = {} },
           ["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = {} },
           ['"'] = { escape = true, close = true, pair = '""', disabled_filetypes = {} },
         },
@@ -505,6 +518,11 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {},
+  },
   { 'Bilal2453/luvit-meta', lazy = true },
   {
     -- Main LSP Configuration
@@ -664,6 +682,8 @@ require('lazy').setup({
         pyright = {},
         ts_ls = {},
         jdtls = {},
+        html = {},
+        prettier = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -710,6 +730,8 @@ require('lazy').setup({
         'python-lsp-server', -- Python language server
         'clangd', -- C/C++ language server
         'jdtls', -- Java language server
+        'html',
+        'eslint-lsp',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
