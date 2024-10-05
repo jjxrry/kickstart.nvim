@@ -167,7 +167,7 @@ vim.opt.shiftwidth = 4
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('n', '<leader>pv', ':Ex<CR>')
+vim.keymap.set('n', '<leader>mm', ':Ex<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -246,13 +246,22 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   --  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   {
+    'kylechui/nvim-surround',
+    version = '*', -- Use for stability; omit to use `main` branch for the latest features
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
+  },
+  {
     'https://github.com/m4xshen/autoclose.nvim',
     config = function()
       require('autoclose').setup {
         keys = {
           ['['] = { escape = true, close = true, pair = '[]', disabled_filetypes = {} },
           ['('] = { escape = true, close = true, pair = '()', disabled_filetypes = {} },
-          ["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = {} },
           ['"'] = { escape = true, close = true, pair = '""', disabled_filetypes = {} },
         },
       }
@@ -842,6 +851,12 @@ require('lazy').setup({
           end,
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
+        performance = {
+          debounce = 50,
+          throttle = 30,
+          max_view_entries = 7,
+          max_item_count = 7,
+        },
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
@@ -851,10 +866,10 @@ require('lazy').setup({
           -- Select the [n]ext item
           ['<C-n>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-b>'] = cmp.mapping.select_prev_item(),
 
           -- Scroll the documentation window [b]ack / [f]orward
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-v>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
 
           -- Accept ([y]es) the completion.
