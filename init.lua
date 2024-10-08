@@ -245,6 +245,18 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   --  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- {
+  --   'catppuccin/nvim',
+  --   name = 'catppuccin',
+  --   priority = 1000,
+  --   config = function()
+  --     -- Optional: You can set Catppuccin flavor (latte, frappe, macchiato, mocha)
+  --     require('catppuccin').setup {
+  --       flavour = 'mocha', -- Or any other theme variant
+  --     }
+  --     vim.cmd.colorscheme 'catppuccin' -- Set the color scheme here
+  --   end,
+  -- },
   {
     'kylechui/nvim-surround',
     version = '*', -- Use for stability; omit to use `main` branch for the latest features
@@ -1036,7 +1048,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
