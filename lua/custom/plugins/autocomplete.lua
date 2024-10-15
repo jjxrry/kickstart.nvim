@@ -52,7 +52,7 @@ return { -- Autocompletion
       performance = {
         debounce = 50,
         throttle = 30,
-        max_view_entries = 9,
+        max_view_entries = 7,
       },
 
       -- For an understanding of why these mappings were
